@@ -1,0 +1,32 @@
+<!-- connect.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Connect Wallet</title>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.6.2/dist/ethers.umd.min.js"></script>
+  </head>
+  <body>
+    <h2>Connecting...</h2>
+    <script>
+      async function connect() {
+        if (typeof window.ethereum !== "undefined") {
+          try {
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            const signer = await provider.getSigner();
+            const address = await signer.getAddress();
+
+            // Send the address back to Unity
+            window.location.href = `unity://wallet-connected?address=${address}`;
+          } catch (err) {
+            alert("Connection failed");
+          }
+        } else {
+          alert("No wallet found.");
+        }
+      }
+      connect();
+    </script>
+  </body>
+</html>
+
